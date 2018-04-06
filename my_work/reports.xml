@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="paper_format_tecal" model="report.paperformat">-->
+            <!--<field name="name">Stock Tecal A4</field>-->
+            <!--<field name="default" eval="True"/>-->
+            <!--<field name="format">A4</field>-->
+            <!--<field name="page_height">0</field>-->
+            <!--<field name="page_width">0</field>-->
+            <!--<field name="orientation">Landscape</field>-->
+            <!--<field name="margin_top">40</field>-->
+            <!--<field name="margin_bottom">20</field>-->
+            <!--<field name="margin_left">7</field>-->
+            <!--<field name="margin_right">7</field>-->
+            <!--<field name="header_line" eval="False"/>-->
+            <!--<field name="header_spacing">35</field>-->
+            <!--<field name="dpi">90</field>-->
+        <!--</record>-->
+
+        <report
+                string="Orden de servicios"
+                id="action_report_work_order"
+                model="my_work.work_order"
+                report_type="qweb-pdf"
+                name="my_work.report_work_order"
+                file="my_work.report_work_order_print"
+                menu="True"
+                />
+
+        <!--<record id="action_report_work_order" model="ir.actions.report.xml">-->
+            <!--<field name="paperformat_id" ref="my_work.paperformat_reparaciones"/>-->
+        <!--</record>-->
+
+    </data>
+</odoo>

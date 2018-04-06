@@ -1,0 +1,39 @@
+Los contactos son los quer tienen el campo tipo de membresia
+cambiar fecha acta por fecha alta
+En lider agregar la fecha que fue instalado y removido del cargo
+
+En miembro agrega una fecha de baja y la causa.
+
+En oficio: 
+
+Agregar el ministro que celebro
+Titulo de l predicacion
+
+En medio basico ver lo de la categoria
+
+########################################################
+Cambio la relacion con contact por hr en todos los miembros
+########################################################
+Reportes
+El wizard obtiene dos fechas y un listado de congregaciones
+Total de membresia al finalzar la primera fecha
+Total de altas
+
+##########################################################
+8 DE NOVIEMBRE
+##########################################################
+En el reporte de estado financiero agregar los pies de firma -->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OK
+En el reporte de estado agregar una tabla con la informacion de las congregaciones->>>>>>>>>>>OK
+En el reporte de estado financiero agregar una tabla con la informacion de las congregaciones-->OK
+Hacer el reporte hermanos bautizados en el presente a;o
+Hacer el reporte hermanos confirmados en el presente a;o
+Hacer el reporte hermanos que causaron alta en el presente a;o-------------------------->OK
+Hacer el reporte hermanos que causaron baja en el presente a;o
+Reporte de fe de bautismo de una persona
+En los reportes si en el wizard no se pone la fecha final no estaba apareciendo la fecha actua------->OK
+##########################################################
+15 DE DICIEMBRE
+##########################################################
+-Realizar el reporte de listado por sacramentos
+-Se agrega en tipo de sacramento la orden sagrada
+-Se agrega el campo no_registro en congregacion y en miembros

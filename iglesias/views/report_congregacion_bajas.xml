@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_listado_bajas">
+        <t t-name="iglesias.report_listado_bajas">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <div class="h2 text-center" name="header_title">Listado de los hermanos que causaron
+                                    baja
+                                </div>
+                                <div class="h3 text-center">Desde:
+                                    <span t-esc="fecha_inicial"></span>
+                                    Hasta:
+                                    <span t-esc="fecha_final"></span>
+                                </div>
+                                <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            </div>
+                            <t t-call="iglesias.bajas"></t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="bajas">
+        <t t-foreach="result" t-as="congregacion">
+            <table class="table table-bordered table-condensed" align="center">
+                <thead>
+                    <th colspan="4">
+                        Nombre de la congregación
+                    </th>
+                    <th colspan="2">
+                        Status
+                    </th>
+                    <th colspan="4">
+                        Ministro a Cargo
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4">
+                            <span t-field="congregacion.nombre"/>
+                        </td>
+                        <td colspan="2">
+                            <span t-field="congregacion.status"/>
+                        </td>
+                        <td colspan="4">
+                            <span t-field="congregacion.ministro_id"/>
+                        </td>
+                        <thead>
+                            <th colspan="4">Nombres y apellidos</th>
+                            <th colspan="4">Motivo de la baja</th>
+                            <th colspan="2">Fecha en que causo baja</th>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="result[congregacion]" t-as="miembro">
+                                <td colspan="4">
+                                    <span t-field="miembro.name"/>
+                                </td>
+                                <td colspan="4">
+                                    <span t-field="miembro.causa"></span>
+                                </td>
+                                <td colspan="2">
+                                    <span t-field="miembro.fecha_baja"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+</odoo>

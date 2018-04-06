@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+my_work.work_order,my_work.work_order,model_my_work_work_order,base.group_system,1,1,1,1
+my_work.work_order manager,my_work.work_order,model_my_work_work_order,my_work.group_my_work_manager,1,1,1,1
+my_work.resource_hdd manager,my_work.resource_hdd,model_my_work_resource_hdd,my_work.group_my_work_manager,1,1,1,1
+my_work.resource_pc manager,my_work.resource_pc,model_my_work_resource_pc,my_work.group_my_work_manager,1,1,1,1
+my_work.hdd_capacity manager,my_work.hdd_capacity,model_my_work_hdd_capacity,my_work.group_my_work_manager,1,1,1,1
+my_work.marca_hdd manager,my_work.marca_hdd,model_my_work_marca_hdd,my_work.group_my_work_manager,1,1,1,1
+my_work.work_done manager,my_work.work_done,model_my_work_work_done,my_work.group_my_work_manager,1,1,1,1
+my_work.work_order_hdd manager,my_work.work_order_hdd,model_my_work_work_order_hdd,my_work.group_my_work_manager,1,1,1,1
+my_work.work_order_pc manager,my_work.work_order_pc,model_my_work_work_order_pc,my_work.group_my_work_manager,1,1,1,1
+my_work.work_type manager,my_work.work_type,model_my_work_work_type,my_work.group_my_work_manager,1,1,1,1
+

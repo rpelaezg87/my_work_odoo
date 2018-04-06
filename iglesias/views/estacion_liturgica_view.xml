@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="estacion_liturgica_form" model="ir.ui.view">
+            <field name="name">iglesias.estacion_liturgica.form</field>
+            <field name="model">iglesias.estacion_liturgica</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <div class="oe_title">
+                                <label class="oe_edit_only" for="nombre" string="Nombre"/>
+                                <h1>
+                                    <field name="nombre"/>
+                                </h1>
+                            </div>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="estaciones_action" model="ir.actions.act_window">
+            <field name="name">Estaciones</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">iglesias.estacion_liturgica</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para agregar una estacion liturgica.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_estaciones" name="Estaciones" action="estaciones_action"
+                  parent="iglesias.menu_iglesias_group" sequence="1"/>
+        <!--<menuitem id="product_product_menu" name="Product Variants" action="product.product_normal_action"-->
+        <!--parent="menu_stock_inventory_control" sequence="2" groups="product.group_product_variant"/>-->
+
+    </data>
+</openerp>

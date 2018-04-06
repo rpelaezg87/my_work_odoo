@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_congregaciones_enf">
+        <t t-name="iglesias.report_congregaciones_enf">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <!--<div class="row">-->
+                            <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                            <!--<div class="h2" name="header_title">Listado</div>-->
+                            <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            <!--</div>-->
+                            <t t-call="iglesias.tabla_cangregaciones_enf"></t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="tabla_cangregaciones_enf">
+        <table class="table table-bordered table-condensed" align="center">
+            <tr>
+                <td colspan="2">
+                    <strong>Nombre de la congregación</strong>
+                </td>
+                <td colspan="10">
+                    <span t-field="o.nombre"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Status</strong>
+                </td>
+                <td colspan="10">
+                    <span t-field="o.status"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <strong>Nombre del ministro a Cargo</strong>
+                </td>
+                <td colspan="10">
+                    <span t-field="o.ministro_id"/>
+                </td>
+            </tr>
+        </table>
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th>Nombre y apellidos</th>
+                <th>Padecimientos</th>
+                <th>Medicamentos</th>
+            </thead>
+            <tbody>
+                <tr t-foreach="o.enfermos_ids" t-as="line">
+                    <td>
+                        <span t-field="line.name"/>
+                    </td>
+                    <td>
+                        <span t-field="line.padecimientos"/>
+                    </td>
+                    <td>
+                        <span t-field="line.medicamentos"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+</odoo>

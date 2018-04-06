@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="sacramento_search" model="ir.ui.view">
+            <field name="name">iglesias.sacramento.search</field>
+            <field name="model">iglesias.sacramento</field>
+            <field name="arch" type="xml">
+                <search string="Sacramentos">
+                    <field name="miembro_id" string="Hermano"
+                           filter_domain="[('miembro_id.name', 'ilike', self)]"></field>
+                    <field name="congregacion_id" string="Congregacion"
+                           filter_domain="[('congregacion.nombre', 'ilike', self)]"></field>
+                    <field name="ministro" string="Ministro" filter_domain="[('ministro.name', 'ilike', self)]"></field>
+                    <field name="estacion_liturgica_id" string="Estación litúrgca" filter_domain="[('estacion_liturgica_id.nombre', 'ilike', self)]"></field>
+                    <separator></separator>
+                    <filter name="bautismo" string="Bautismos" domain="[('tipo_sacramento', '=', 'bautismo')]"></filter>
+                    <filter name="confirmacion" string="Confirmaciones"
+                            domain="[('tipo_sacramento', '=', 'confirmacion')]"></filter>
+                    <filter name="bendicion" string="Bendición de matrimonio"
+                            domain="[('tipo_sacramento', '=', 'bendicion')]"></filter>
+                    <filter name="orden_sagrada" string="Orden sagrada"
+                            domain="[('tipo_sacramento', '=', 'orden_sagrada')]"></filter>
+                    <filter name="obituario" string="Obituarios"
+                            domain="[('tipo_sacramento', '=', 'obituario')]"></filter>
+                </search>
+            </field>
+        </record>
+
+        <record id="sacramento_form" model="ir.ui.view">
+            <field name="name">iglesias.sacramento.form</field>
+            <field name="model">iglesias.sacramento</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button attrs="{'invisible':[('tipo_sacramento', '!=', 'bautismo')]}" name="print_fe_bautismo"
+                         string="Imprimir Fe de bautismo" type="object">
+                        </button>
+                    </header>
+                    <sheet>
+                        <group>
+                            <div class="oe_title">
+                                <label class="oe_edit_only" for="tipo_sacramento" string="Tipo de sacramento"/>
+                                <h1>
+                                    <field name="tipo_sacramento"/>
+                                </h1>
+                            </div>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="estacion_liturgica_id"></field>
+                                <field name="miembro_id"></field>
+                            </group>
+                            <group>
+                                <field name="congregacion_id"></field>
+                                <field name="ministro"></field>
+                                <field name="fecha"></field>
+                            </group>
+                        </group>
+                        <group name="orden_sagrada" attrs="{'invisible':[('tipo_sacramento','!=', 'orden_sagrada')]}">
+                            <group>
+                                <field name="miembro_categoria"
+                                       attrs="{'required':[('tipo_sacramento','=', 'orden_sagrada')]}"></field>
+                            </group>
+                        </group>
+                        <group name="bautismo" attrs="{'invisible':[('tipo_sacramento','!=', 'bautismo')]}">
+                            <group>
+                                <field name="padre" attrs="{'required':[('tipo_sacramento','=', 'bautismo')]}"></field>
+                                <field name="padrino"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bautismo')]}"></field>
+                            </group>
+                            <group>
+                                <field name="madre" attrs="{'required':[('tipo_sacramento','=', 'bautismo')]}"></field>
+                                <field name="madrina"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bautismo')]}"></field>
+                            </group>
+                        </group>
+                        <group name="confirmacion" attrs="{'invisible':[('tipo_sacramento','!=', 'confirmacion')]}">
+                            <field name="obispo" attrs="{'required':[('tipo_sacramento','=', 'confirmacion')]}"></field>
+                        </group>
+                        <group name="bendicion" attrs="{'invisible':[('tipo_sacramento','!=', 'bendicion')]}">
+                            <group string="Conyuge">
+                                <field name="conyuge"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bendicion')]}"></field>
+                                <field name="no_registro"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bendicion')]}"></field>
+                            </group>
+                            <group string="Testigos">
+                                <field name="testigo1"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bendicion')]}"></field>
+                                <field name="testigo2"
+                                       attrs="{'required':[('tipo_sacramento','=', 'bendicion')]}"></field>
+                            </group>
+                        </group>
+                        <group string="Lugar"
+                               attrs="{'invisible':[('tipo_sacramento','not in', ('bautismo','obituario'))]}">
+                            <field name="lugar" nolabel="1"
+                                   attrs="{'required':[('tipo_sacramento','in', ('bautismo','obituario'))]}"></field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sacramento_tree" model="ir.ui.view">
+            <field name="name">iglesias.sacramento.tree</field>
+            <field name="model">iglesias.sacramento</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="tipo_sacramento"></field>
+                    <field name="estacion_liturgica_id"></field>
+                    <field name="congregacion_id"></field>
+                    <field name="miembro_id"></field>
+                    <field name="ministro"></field>
+                    <field name="fecha"></field>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sacramentos_action" model="ir.actions.act_window">
+            <field name="name">Sacramentos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">iglesias.sacramento</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para agregar un sacramento.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_sacramentos" name="Sacramentos" action="sacramentos_action"
+                  parent="iglesias.menu_iglesias_group" sequence="1"/>
+        <!--<menuitem id="product_product_menu" name="Product Variants" action="product.product_normal_action"-->
+        <!--parent="menu_stock_inventory_control" sequence="2" groups="product.group_product_variant"/>-->
+
+    </data>
+</openerp>

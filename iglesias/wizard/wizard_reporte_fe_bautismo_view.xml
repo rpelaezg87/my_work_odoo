@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_reporte_fe_batismo_view" model="ir.ui.view">
+        <field name="name">Fe de Bautismo</field>
+        <field name="model">iglesias.wizard_fe_bautismo</field>
+        <field name="arch" type="xml">
+        <form string="Opciones">
+            <group col="4">
+                <field name="congregacion_id"/>
+                <field name="fecha"/>
+            </group>
+            <group string="Hermanos">
+                <field name="miembros_ids" nolabel="1">
+                    <tree>
+                        <field name="no_registro" colspan="1"></field>
+                        <field name="name" colspan="3"></field>
+                        <field name="congregacion_id" colspan="3"></field>
+                        <field name="membresia" colspan="3"></field>
+                        <field name="edad" colspan="1"></field>
+                    </tree>
+                </field>
+            </group>
+
+            <footer>
+                <button name="print_report" string="Imprimir" type="object" default_focus="1" class="oe_highlight"/>
+                or 
+                <button string="Cancelar" class="oe_link" special="cancel" />
+            </footer>
+        </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_fe_bautismo_menu" model="ir.actions.act_window">
+        <field name="name">Fe de bautismo</field>
+        <field name="res_model">iglesias.wizard_fe_bautismo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_reporte_fe_batismo_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_wizard_fe_bautismo" name="Fe de bautismo" action="action_wizard_fe_bautismo_menu" parent="menu_reportes" sequence="6"/>
+
+</odoo>

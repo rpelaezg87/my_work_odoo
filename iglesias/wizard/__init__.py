@@ -1,0 +1,7 @@
+import wizard_reporte_comun
+import wizard_reporte_estado_congregaciones
+import wizard_reporte_estado_financiero
+import wizard_reporte_listado_altas
+import wizard_reporte_listado_bajas
+import wizard_reporte_listado_x_sacramento
+import wizard_reporte_fe_bautismo

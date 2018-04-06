@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--search resource view-->
+        <record id="view_resource_resource_inherit_search" model="ir.ui.view">
+            <field name="name">my_work.resource.search</field>
+            <field name="inherit_id" ref="resource.view_resource_resource_search"/>
+            <field name="model">resource.resource</field>
+            <field name="arch" type="xml">
+                <group position="inside">
+                    <filter string="Categoria" domain="[]" context="{'group_by':'resource_cat'}"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="resource_resource_form" model="ir.ui.view">
+            <field name="name">resource.resource.form</field>
+            <field name="model">resource.resource</field>
+            <field name="inherit_id" ref="resource.resource_resource_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="code"></field>
+                </field>
+                <field name="resource_type" position="after">
+                    <field name="resource_cat" attrs="{'invisible': [('resource_type', 'in', ['user',False])],
+                                                        'required': [('resource_type', 'in', ['material'])]}"></field>
+                </field>
+            </field>
+        </record>
+
+        <record id="resource_resource_tree" model="ir.ui.view">
+            <field name="name">resource.resource.tree</field>
+            <field name="model">resource.resource</field>
+            <field name="inherit_id" ref="resource.resource_resource_tree"/>
+            <field name="arch" type="xml">
+                <field name="time_efficiency" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="time_efficiency" position="before">
+                    <field name="resource_cat"></field>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="res_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="email" position="before">
+                    <field name="ci" attrs="{'invisible': [('company_type', '!=', 'person')],
+                                                        'required': [('company_type','=', 'person')]}"></field>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

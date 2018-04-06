@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_ce">
+        <t t-name="iglesias.report_ce">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <div class="h2" name="header_title">Estado de la Iglesia</div>
+                                <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            </div>
+
+                            <t t-call="iglesias.congregaciones"></t>
+                            <t t-call="iglesias.totales"></t>
+                            <p>
+                                <div class="h3">Totales por fechas</div>
+                            </p>
+                            <t t-call="iglesias.totales_entre_fechas"></t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="congregaciones">
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th colspan="4">
+                    Nombre de la congregación
+                </th>
+                <th colspan="2">
+                    Status
+                </th>
+                <th colspan="4">
+                    Ministro a Cargo
+                </th>
+            </thead>
+            <tbody>
+                <tr  t-foreach="congregaciones" t-as="line">
+                    <td colspan="4">
+                        <span t-field="line.nombre"/>
+                    </td>
+                    <td colspan="2">
+                        <span t-field="line.status"/>
+                    </td>
+                    <td colspan="4"><span t-field="line.ministro_id"/></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="totales">
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th colspan="6"></th>
+                <th colspan="1">TOTALES</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <strong>Parroquias</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['parroquias']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Misiones de Parroquias</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['misiones']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Extensiones de Parroquias</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['extensiones']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Diezmadores</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['diezmadores']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Familias episcopales</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['familias']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Hermanos bautizados</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['bautizados']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Hermanos confirmados</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['confirmaciones']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Hermanos que han bendecido su matrimonio</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['bendiciones']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Niños de 0-14 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['ninnos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Niñas de 0-14 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['ninnas']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Hombres jóvenes de 15-29 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['h_jovenes']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Mujeres jóvenes de 15-29 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['m_jovenes']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Hombres adultos de 30-59 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['h_adultos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Mujeres adultas de 30-59 años</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['m_adultos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ancianos de 60 en adelante</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['ancianos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ancianas de 60 en adelante</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['ancianas']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Total de miembros</strong>
+                    </td>
+                    <td>
+                        <span t-esc="totales_sin_fecha['total_miembros']"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="totales_entre_fechas">
+        <table class="table table-bordered table-condensed" align="center">
+            <tr>
+                <td colspan="3"></td>
+                <td colspan="4">
+                    <strong>Hasta la Fecha:</strong><br></br>
+                    <span t-esc="data['fecha_inicio']"></span>
+                </td>
+                <td colspan="4">
+                    <strong>Hasta la Fecha:</strong><br></br>
+                    <span t-esc="fecha_final"></span>
+                </td>
+                <td colspan="4">
+                    <strong>Entre las Fechas:</strong><br></br>
+                    <span t-esc="data['fecha_inicio']"></span>-><span t-esc="fecha_final"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Altas</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['altas']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['altas']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['altas']-total_membresia_fecha1['altas']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Bajas</td>
+                <td colspan="4">
+                    <table style="width:100%;" class="details">
+                        <td colspan="2">Traslados:
+                            <span t-esc="total_membresia_fecha1['bajas_traslado']"></span>
+                        </td>
+                        <td colspan="2">Fallecidos:
+                            <span t-esc="total_membresia_fecha1['bajas_fallecido']"></span>
+                        </td>
+                        <td colspan="1">Total:
+                            <span t-esc="total_membresia_fecha1['bajas']"></span>
+                        </td>
+                    </table>
+                </td>
+                <td colspan="4">
+                    <table style="width:100%;" class="details">
+                        <td colspan="2">Traslados:
+                            <span t-esc="total_membresia_fecha2['bajas_traslado']"></span>
+                        </td>
+                        <td colspan="2">Fallecidos:
+                            <span t-esc="total_membresia_fecha2['bajas_fallecido']"></span>
+                        </td>
+                        <td colspan="1">Total:
+                            <span t-esc="total_membresia_fecha2['bajas']"></span>
+                        </td>
+                    </table>
+                </td>
+                <td colspan="4">
+                    <table style="width:100%;" class="details">
+                        <td colspan="2">Traslados:
+                            <span t-esc="total_membresia_fecha2['bajas_traslado']-total_membresia_fecha1['bajas_traslado']"></span>
+                        </td>
+                        <td colspan="2">Fallecidos:
+                            <span t-esc="total_membresia_fecha2['bajas_fallecido']-total_membresia_fecha1['bajas_fallecido']"></span>
+                        </td>
+                        <td colspan="1">Total:
+                            <span t-esc="total_membresia_fecha2['bajas']-total_membresia_fecha1['bajas']"></span>
+                        </td>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Visitantes</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['visitantes']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['visitantes']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['visitantes']-total_membresia_fecha1['visitantes']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Catecumenos</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['catecumenos']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['catecumenos']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['catecumenos']-total_membresia_fecha1['catecumenos']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Comulgantes</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['comulgantes']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['comulgantes']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['comulgantes']-total_membresia_fecha1['comulgantes']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Pasivos</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['pasivos']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['pasivos']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['pasivos']-total_membresia_fecha1['pasivos']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Bautizados</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['bautizados']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['bautizados']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['bautizados']-total_membresia_fecha1['bautizados']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Confirmados</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['confirmaciones']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['confirmaciones']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['confirmaciones']-total_membresia_fecha1['confirmaciones']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Bendiciones</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['bendiciones']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['bendiciones']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['bendiciones']-total_membresia_fecha1['bendiciones']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Servicio de Sta Comunión</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['servicio_sta_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_sta_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_sta_comunion']-total_membresia_fecha1['servicio_sta_comunion']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Otros Servicios</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['servicio_otros']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_otros']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_otros']-total_membresia_fecha1['servicio_otros']"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Total de Servicios</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['servicio_otros']+total_membresia_fecha1['servicio_sta_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_otros']+total_membresia_fecha2['servicio_sta_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['servicio_otros']+total_membresia_fecha2['servicio_sta_comunion']-(total_membresia_fecha1['servicio_otros']+total_membresia_fecha1['servicio_sta_comunion'])"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Asistencia Promedio Servicios de Sta Comunion</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['promedio_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['promedio_comunion']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="pc_entre_fechas"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">Asistencia Promedio a Otros Servicios</td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha1['promedio_otros']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="total_membresia_fecha2['promedio_otros']"></span>
+                </td>
+                <td colspan="4">
+                    <span t-esc="po_entre_fechas"></span>
+                </td>
+            </tr>
+        </table>
+    </template>
+</odoo>

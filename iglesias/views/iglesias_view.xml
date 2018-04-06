@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Top menu item -->
+        <menuitem name="Iglesias"
+                  id="menu_iglesias"
+                  sequence="70"/>
+
+        <menuitem id="menu_iglesias_group" name="Iglesias" parent="menu_iglesias" sequence="1"/>
+        <menuitem id="menu_medios_b_group" name="Medios básicos" parent="menu_iglesias" sequence="2"/>
+        <menuitem id="menu_reportes" name="Reportes" parent="menu_iglesias" sequence="3"/>
+    </data>
+</openerp>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+
+
+
+        <report
+            string="Composición de la Junta de Gobierno Parroquial"
+            id="action_report_congregaciones_junta"
+            model="iglesias.congregacion"
+            report_type="qweb-pdf"
+            name="iglesias.report_congregaciones_junta"
+            file="iglesias.report_congregaciones_junta"
+        />
+
+        <report
+            string="Listado de congregaciones"
+            id="action_report_congregaciones"
+            model="iglesias.congregacion"
+            report_type="qweb-pdf"
+            name="iglesias.report_congregaciones"
+            file="iglesias.report_congregaciones"
+        />
+
+        <report
+            string="Fe de bautismo"
+            id="action_report_febautismo"
+            model="iglesias.sacramento"
+            report_type="qweb-pdf"
+            name="iglesias.report_fe_bautismo"
+            file="iglesias.report_fe_bautismo"
+        />
+
+        <report
+            string="Listado general de membresía"
+            id="action_report_congregaciones_miembros"
+            model="iglesias.congregacion"
+            report_type="qweb-pdf"
+            name="iglesias.report_congregaciones_miembros"
+            file="iglesias.report_congregaciones_miembros"
+        />
+
+        <report
+            string="Listado de hermanos con padecimientos crónicos"
+            id="action_report_congregaciones_enfermos"
+            model="iglesias.congregacion"
+            report_type="qweb-pdf"
+            name="iglesias.report_congregaciones_enf"
+            file="iglesias.report_congregaciones_enf"
+        />
+
+         <report
+            string="Listado de los medios básicos"
+            id="action_report_congregaciones_mb"
+            model="iglesias.congregacion"
+            report_type="qweb-pdf"
+            name="iglesias.report_congregaciones_mediosb"
+            file="iglesias.report_congregaciones_mediosb"
+        />
+
+        <report 
+            id="iglesias_congregaciones_action_report"
+            model="iglesias.wizard_reporte_ec"
+            string="Reporte de estado de congregaciones"
+            report_type="qweb-pdf"
+            name="iglesias.report_ce"
+            file="iglesias.report_estado_congregacion"
+            attachment_use="False"
+        />
+        <report
+            id="iglesias_estado_financiero_action_report"
+            model="iglesias.wizard_reporte_ef"
+            string="Reporte de estado financiero de congregaciones"
+            report_type="qweb-pdf"
+            name="iglesias.report_ef"
+            file="iglesias.report_estado_financiero"
+            attachment_use="False"
+        />
+        <report
+            id="iglesias_listado_altas_action_report"
+            model="iglesias.wizard_reporte_la"
+            string="Listado de hermanos que causaron altas"
+            report_type="qweb-pdf"
+            name="iglesias.report_listado_altas"
+            file="iglesias.report_listado_altas"
+            attachment_use="False"
+        />
+        <report
+            id="iglesias_listado_bajas_action_report"
+            model="iglesias.wizard_reporte_lb"
+            string="Listado de hermanos que causaron bajas"
+            report_type="qweb-pdf"
+            name="iglesias.report_listado_bajas"
+            file="iglesias.report_listado_bajas"
+            attachment_use="False"
+        />
+        <report
+            id="iglesias_listado_baautizos_action_report"
+            model="iglesias.wizard_reporte_bautizos"
+            string="Listado de hermanos bautizados"
+            report_type="qweb-pdf"
+            name="iglesias.report_listado_bautizos"
+            file="iglesias.report_listado_bautizos"
+            attachment_use="False"
+        />
+    </data>
+</odoo>

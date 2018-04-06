@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_ef">
+        <t t-name="iglesias.report_ef">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <div class="h2" name="header_title">Estado Financiero de la Iglesia</div>
+                                <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            </div>
+                            <t t-call="iglesias.congregaciones"></t>
+                            <t t-call="iglesias.tabla_desgloze"></t>
+
+                            <t t-call="iglesias.saldos"></t>
+                            <t t-call="iglesias.sign"></t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="tabla_desgloze">
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th colspan="6"></th>
+                <th colspan="1">TOTAL DE INGRESOS</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ofrendas de diezmos</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['diezmos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ofrendas de bandejas</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['bandejas']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ofrenda de unidad de gracia</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['unidad_gracia']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ofrenda especial de Cuaresma</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['cuaresma']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ofrendas para cena de Navidad</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['navidad']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Suplemento de la diósesis para niños</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['diocesis_ninnos']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Suplemento de la diósesis para iglesia</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['diocesis_iglesia']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Otras ofrendas</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['otras_ofrendas']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>TOTAL</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['otras_ofrendas']+desgloze['otras_ofrendas']+desgloze['diocesis_iglesia']+
+                        desgloze['diocesis_ninnos']+desgloze['navidad']+desgloze['cuaresma']+desgloze['unidad_gracia']+
+                        desgloze['bandejas']+desgloze['diezmos']"/>
+                    </td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th colspan="6">
+
+                    </th>
+                    <th>
+                        <strong>TOTAL DE EGRESOS</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <strong>Gastos de electricidad, gas y agua:</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_01']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Gastos de teléfonos y comunicaciones</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_02']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Limpieza y decoración</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_03']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Materiales de oficina</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_04']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Reparación de edificios, muebles y equipos</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_05']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Remuneración a empleados</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_06']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Atención a los niños en su escuela bíblica</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_07']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Materiales bíblicos y auxiliares</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_08']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Gastos de cocina y alimentación ligera</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_09']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Atención en compañeros en misión</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_10']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Viajes y diligencias</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_11']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Participación ecuménica</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_12']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Ayuda a hermanos fieles en apuros</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_13']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Celebración de la cena comunitaria de Navidad</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_14']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Especies para la eucaristía</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_15']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Transferencia al tesoro nacional del 20% de las Ofrendas de Diezmos y Bandejas</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_16']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Transferencia de las OUG y OEC</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_17']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Msceláneas</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_18']"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>TOTAL</strong>
+                    </td>
+                    <td>
+                        <span t-esc="desgloze['egreso_01']+desgloze['egreso_02']+desgloze['egreso_03']+
+                        desgloze['egreso_04']+desgloze['egreso_05']+desgloze['egreso_06']+desgloze['egreso_07']+
+                        desgloze['egreso_08']+desgloze['egreso_09']+desgloze['egreso_10']+desgloze['egreso_11']+
+                        desgloze['egreso_12']+desgloze['egreso_13']+desgloze['egreso_14']+desgloze['egreso_15']+
+                        desgloze['egreso_16']+desgloze['egreso_17']+desgloze['egreso_18']"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="saldos">
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th colspan="6">Hasta la Fecha</th>
+                <th colspan="1">Saldo</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <strong>
+                            <span t-esc="fecha_inicial"/>
+                        </strong>
+                    </td>
+                    <td colspan="1">
+                        <strong>
+                            <span t-esc="saldo_inicial"/>
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>
+                            <span t-esc="fecha_final"/>
+                        </strong>
+                    </td>
+                    <td colspan="1">
+                        <strong>
+                            <span t-esc="desgloze['saldo']"/>
+                        </strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="sign">
+        <table class="table table-condensed" name="table_sign">
+            <thead>
+                <tr>
+                    <td>
+                        <strong>Tesorero(a)</strong>
+                    </td>
+                    <td>
+                        <strong>Ministro a Cargo</strong>
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <td>Nombre:__________________________________</td>
+                <td>Nombre:__________________________________</td>
+            </tr>
+            <tr>
+                <td>Firma:__________________________________</td>
+                <td>Firma:__________________________________</td>
+            </tr>
+        </table>
+    </template>
+</odoo>

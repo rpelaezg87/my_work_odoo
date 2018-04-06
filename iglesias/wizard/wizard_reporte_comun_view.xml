@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_reporte_comun_view" model="ir.ui.view">
+        <field name="name">Reporte</field>
+        <field name="model">iglesias.wizard_commun</field>
+        <field name="arch" type="xml">
+        <form string="Opciones">
+            <group col="4">
+                <field name="fecha_inicio"/>
+                <field name="fecha_final"/>
+            </group>
+            <group string="Congregaciones">
+                <field name="congregaciones_ids" nolabel="1"></field>
+            </group>
+
+            <footer>
+                <button name="check_report" string="Imprimir" type="object" default_focus="1" class="oe_highlight"/>
+                or 
+                <button string="Cancelar" class="oe_link" special="cancel" />
+            </footer>
+        </form>
+        </field>
+    </record>
+
+    <!--<record id="action_wizard_reporte_comun_menu" model="ir.actions.act_window">-->
+        <!--<field name="name">Reporte</field>-->
+        <!--<field name="res_model">iglesias.wizard_commun</field>-->
+        <!--<field name="view_type">form</field>-->
+        <!--<field name="view_mode">form</field>-->
+        <!--<field name="view_id" ref="wizard_reporte_comun_view"/>-->
+        <!--<field name="target">new</field>-->
+    <!--</record>-->
+
+    <!--<menuitem id="menu_wizard_reporte_comun" name="Estado de congregaciones" action="action_wizard_reporte_comun_menu" parent="menu_reportes" sequence="100"/>-->
+
+</odoo>

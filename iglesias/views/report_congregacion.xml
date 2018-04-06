@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_congregaciones">
+        <t t-name="iglesias.report_congregaciones">
+            <t t-call="report.html_container">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <!--<div class="h2" name="header_title">Listado</div>-->
+                                <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            <!--</div>-->
+                            <t t-call="iglesias.tabla_cangregaciones"></t>
+                        </div>
+                    </t>
+
+            </t>
+        </t>
+    </template>
+
+    <template id="tabla_cangregaciones">
+        <table class="table table-bordered table-condensed" align="center">
+            <thead>
+                <th colspan="6">CONGREGACIONES</th>
+                <th colspan="2">STATUS</th>
+                <th colspan="4">RECTORES O MINISTROS A CARGO</th>
+            </thead>
+            <tbody>
+                <tr t-foreach="docs" t-as="o">
+                    <td colspan="6">
+                        <span t-field="o.nombre"/>
+                    </td>
+                    <td colspan="2">
+                         <span t-field="o.status"/>
+                    </td>
+                    <td colspan="4">
+                        <span t-field="o.ministro_id"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+</odoo>

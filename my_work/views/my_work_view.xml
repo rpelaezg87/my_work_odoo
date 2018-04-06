@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Top menu item -->
+        <menuitem name="Reparaciones"
+                  id="menu_reparaciones"
+                  sequence="70"/>
+
+        <menuitem id="menu_servicios" name="Ordenes de Servicios" parent="menu_reparaciones" sequence="1"/>
+        <menuitem id="menu_configurar" name="Configuracion" parent="menu_reparaciones" sequence="2"/>
+
+        <!--Search de Work Order-->
+         <record id="view_work_order_filter" model="ir.ui.view">
+            <field name="name">work.oder.select</field>
+            <field name="model">my_work.work_order</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner">
+                   <field name="a_nombre"
+                       filter_domain="[('a_nombre','ilike',self)]"/>
+                    <field  name="ci" filter_domain="[('ci','=',self)]"/>
+                    <field  name="no_orden" filter_domain="[('no_orden','ilike',self)]"/>
+                    <separator/>
+                   <filter string="Ordenes de PC" name="type_pc" domain="[('tipo_orden','=','pc')]"/>
+                   <filter string="Ordenes de HDD" name="type_pc" domain="[('tipo_orden','=','hdd')]"/>
+                   <separator/>
+                   <group expand="0" name="group_by" string="Agrupar Por">
+                       <filter string="Fecha" context="{'group_by': 'fecha'}"/>
+                       <filter string="Estado" context="{'group_by': 'state'}"/>
+                       <filter string="Cliente" context="{'group_by': 'a_nombre'}"/>
+                       <filter string="Tipo de Orden" context="{'group_by': 'tipo_orden'}"/>
+                   </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_work_order_form" model="ir.ui.view">
+            <field name="name">work.oder.form</field>
+            <field name="model">my_work.work_order</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="ORDEN DE SERVICIO">
+                    <header>
+                        <button name="confirmar" string="Confirmar" type="object" states="nuevo,p_revisar"
+                                class="oe_highlight"></button>
+                        <button name="cancelar" string="Cancelar" type="object" states="p_revisar,abierto,reparado,cerrado"></button>
+                        <button name="pendiente_revisar" string="Pendiente a Revisar" type="object" states="nuevo"
+                                class="oe_highlight"></button>
+                        <button name="reparado" string="Reparado" type="object" states="abierto"
+                                class="oe_highlight"></button>
+                        <button name="reiniciar" string="Reiniciar" type="object" states="p_revisar,abierto,reparado,cancelado"></button>
+                        <button name="entregar" string="Entregar" type="object" states="reparado"
+                                class="oe_highlight"></button>
+                        <button name="sin_solucion" string="Sin Solucion" type="object" states="abierto"></button>
+                        <field name="state" widget="statusbar" statusbar_visible="nuevo,p_revisar,abierto,reparado,cerrado"/>
+                    </header>
+                    <sheet>
+                        <group name="work_order">
+                            <group name="work_order_left1">
+                                <field name="no_orden"></field>
+                                <field name="a_nombre" domain="[('customer','=', True)]" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="realizado_por" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="entregado_por" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="recibido_por" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                            <group name="work_order_right1">
+                                <field name="fecha_inicial" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="fecha" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="tipo_orden" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="piezas" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="costo" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                        </group>
+                        <group name="work_order_pc" string="DATOS DE LA PC"
+                               attrs="{'invisible': [('tipo_orden', 'in', ['hdd', False])],
+                                        'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}">
+                            <group name="work_order_pc_left1">
+                                <field name="pc" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="motherboard" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="fuente" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="memorias_ram" widget="many2many_tags"></field>
+                                <field name="lectores" widget="many2many_tags" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="hdd" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}" widget="many2many_tags"></field>
+                                <field name="chasis" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="cpu" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="laptop" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="otros_nota" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                            <group name="work_order_pc_right1" string="Tipo de Servicio">
+                                <field name="mantenimiento" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="rmenor" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="rmayor" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="otros" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="so" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="act" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="insoft" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="antivirus" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                        </group>
+                        <group name="work_order_hdd" string="DATOS DEL HDD"
+                               attrs="{'invisible': [('tipo_orden', 'in', ['pc', False])],
+                                       'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}">
+                            <group name="work_order_pc_left1">
+                                <field name="hdd_resource" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="marca" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="no_serie" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="firw" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="capacidad" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="tipo_conexion" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="no_placa" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                            <group name="work_order_pc_right1" string="TIPO DE SERVICIO">
+                                <field name="recuperacion_datos" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="reparcion_hardware" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="sus_componentes" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                                <field name="sus_placa" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}"></field>
+                            </group>
+                        </group>
+                        <group string="TRABAJOS REALIZADOS" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}">
+                            <field name="work_done_ids" nolabel="1" attrs="{'readonly': [('state', 'in', ['cancelado', 'reparado','cerrado'])]}">
+                                <tree editable="top">
+                                    <field name="no"></field>
+                                    <field name="denominacion"></field>
+                                    <field name="precio"></field>
+                                    <field name="importe" sum="Total"></field>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_work_order_tree" model="ir.ui.view">
+            <field name="name">work.oder.tree</field>
+            <field name="model">my_work.work_order</field>
+            <field name="arch" type="xml">
+                <tree string="ORDENES DE SERVICIO">
+                    <field name="no_orden"></field>
+                    <field name="a_nombre"></field>
+                    <field name="ci"></field>
+                    <field name="fecha"></field>
+                    <field name="costo" sum="Total"></field>
+                    <field name="tipo_orden"></field>
+                    <field name="state"></field>
+                </tree>
+            </field>
+        </record>
+
+        <!--PC-->
+        <record id="view_resource_pc_form" model="ir.ui.view">
+            <field name="name">work.order.pc.form</field>
+            <field name="model">my_work.resource_pc</field>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="code"></field>
+                            <field name="name"></field>
+                            <field name="motherboard"></field>
+                            <field name="fuente"></field>
+                            <field name="laptop"></field>
+                            <field name="company_id"></field>
+                            <field name="chasis"></field>
+                            <field name="lectores" widget="many2many_tags"></field>
+                            <field name="cpu"></field>
+                            <field name="resource_type" invisible="1"></field>
+                            <field name="memorias_ram" widget="many2many_tags"></field>
+                            <field name="hdd" widget="many2many_tags"></field>
+                            <field name="otros" invisible="1"></field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ordenes_servicio_form" model="ir.actions.act_window">
+            <field name="name">Ordenes de Servicio</field>
+            <field name="res_model">my_work.work_order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_work_order_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una nueva orden de servicio.
+                </p>
+                <p>
+                    Las ordenes de servicios pueden ser de reparacion de discos duros o reparacion de PC.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_resource_resource_form" model="ir.actions.act_window">
+            <field name="name">Recursos</field>
+            <field name="res_model">resource.resource</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_resource_type':'material', 'default_resource_type':'material'}</field>
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear un nuevo recurso.
+                </p>
+                <p>
+                    Componentes Y Piezas
+                </p>
+            </field>
+        </record>
+
+    </data>
+
+    <record id="action_work_order_pc_form" model="ir.actions.act_window">
+            <field name="name">Computadoras</field>
+            <field name="res_model">my_work.resource_pc</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una nueva computadora.
+                </p>
+                <p>
+                    Las computadors son medios los que se le efectuan las reparaciones.
+                </p>
+            </field>
+        </record>
+
+    <record id="action_work_order_hdd_form" model="ir.actions.act_window">
+            <field name="name">Discos Duros</field>
+            <field name="res_model">my_work.resource_hdd</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear un nuevo disco duro.
+                </p>
+                <p>
+                    Las discos duros son medios los que se le efectuan las reparaciones.
+                </p>
+            </field>
+    </record>
+
+     <menuitem
+                action="action_ordenes_servicio_form"
+                id="menu_action_ordenes_servicio_form"
+                parent="menu_servicios" sequence="1"/>
+        <!--#resource.resource-->
+        <menuitem
+                action="action_resource_resource_form"
+                id="menu_action_resource_resource_form"
+                parent="menu_configurar" sequence="1"/>
+
+        <!--Computadoras-->
+        <menuitem
+                action="action_work_order_pc_form"
+                id="menu_action_work_order_pc_form"
+                parent="menu_configurar" sequence="2"/>
+        <!--HDD-->
+        <menuitem
+                action="action_work_order_hdd_form"
+                id="menu_action_work_order_hdd_form"
+                parent="menu_configurar" sequence="3"/>
+
+        <!--Clientes-->
+        <menuitem
+                action="base.action_partner_customer_form"
+                id="menu_action_cliente_form"
+                parent="menu_servicios" sequence="3"/>
+
+</openerp>

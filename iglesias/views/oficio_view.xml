@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="oficio_search" model="ir.ui.view">
+            <field name="name">iglesias.oficio.search</field>
+            <field name="model">iglesias.oficio</field>
+            <field name="arch" type="xml">
+                <search string="Oficios">
+                    <field name="congregacion_id" string="Congregacion"
+                           filter_domain="[('congregacion_id.nombre', 'ilike', self)]"></field>
+                    <field name="estacion_liturgica_id" string="Estación litúrgca"
+                           filter_domain="[('estacion_liturgica_id.nombre', 'ilike', self)]"></field>
+                    <filter name="santa_comunion" string="Santa comunión" domain="[('actividad','=','comunion')]"></filter>
+                    <filter name="otros" string="Otros servicios" domain="[('actividad','=','otros')]"></filter>
+                </search>
+            </field>
+        </record>
+        <record id="oficio_form" model="ir.ui.view">
+            <field name="name">iglesias.oficio.form</field>
+            <field name="model">iglesias.oficio</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="nombre" invisible="1"/>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="titulo" string="Predicación"/>
+                            <h1>
+                                <field name="titulo" placeholder="Escriba el título..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="congregacion_id"></field>
+                                <field name="estacion_liturgica_id"></field>
+                                <field name="asistencia_total"></field>
+                            </group>
+                            <group>
+                                <field name="ministro"></field>
+                                <field name="fecha"></field>
+                                <field name="actividad"></field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Sacramentos celebrados">
+                                <field name="sacramentos_ids" widget="many2many"
+                                       domain="[('congregacion_id', '=', congregacion_id),('estacion_liturgica_id','=',estacion_liturgica_id)]">
+                                    <tree>
+                                        <field name="tipo_sacramento"></field>
+                                        <field name="fecha"></field>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group string="Numeros de:">
+                                        <label for="bautismos" string="Bautismos"></label>
+                                        <div>
+                                            <field name="bautismos" class="oe_inline"/>
+                                        </div>
+                                        <label for="confirmados" string="Confirmados"></label>
+                                        <div>
+                                            <field name="confirmados" class="oe_inline"/>
+                                        </div>
+                                        <label for="santa_comunion" string="Santa comunion"></label>
+                                        <div>
+                                            <field name="santa_comunion" class="oe_inline"/>
+                                        </div>
+                                        <label for="bendiciones" string="Bendicion de matrimonios"></label>
+                                        <div>
+                                            <field name="bendiciones" class="oe_inline"/>
+                                        </div>
+                                    </group>
+                                    <group string="Cantidad de:">
+                                        <label for="cantidad_bautizados" string="Bautizados"></label>
+                                        <div>
+                                            <field name="cantidad_bautizados" class="oe_inline"/>
+                                        </div>
+                                        <label for="cantidad_confirmaciones" string="Confirmaciones"></label>
+                                        <div>
+                                            <field name="cantidad_confirmaciones" class="oe_inline"/>
+                                        </div>
+                                        <label for="cantidad_comulgantes" string="Comulgantes"></label>
+                                        <div>
+                                            <field name="cantidad_comulgantes" class="oe_inline"/>
+                                        </div>
+                                        <label for="cantidad_bendiciones" string="Matrimonios bendecidos"></label>
+                                        <div>
+                                            <field name="cantidad_bendiciones" class="oe_inline"/>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Ingresos">
+                                <group>
+                                    <field name="bandejas"></field>
+                                    <field name="diezmos"></field>
+                                    <field name="unidad_gracia"></field>
+                                    <field name="cuaresma"></field>
+                                    <field name="navidad"></field>
+                                    <field name="diocesis_ninnos"></field>
+                                    <field name="diocesis_iglesia"></field>
+                                    <field name="otras_ofrendas"></field>
+                                    <field name="total_ofrendas" readonly="True"
+                                           class="oe_subtotal_footer_separator"></field>
+                                </group>
+                            </page>
+                            <page string="Egresos">
+                                <group>
+                                    <group>
+                                        <field name="egreso_01"></field>
+                                        <field name="egreso_02"></field>
+                                        <field name="egreso_03"></field>
+                                        <field name="egreso_04"></field>
+                                        <field name="egreso_05"></field>
+                                        <field name="egreso_06"></field>
+                                        <field name="egreso_07"></field>
+                                        <field name="egreso_08"></field>
+                                        <field name="egreso_09"></field>
+                                    </group>
+                                    <group>
+                                        <field name="egreso_10"></field>
+                                        <field name="egreso_11"></field>
+                                        <field name="egreso_12"></field>
+                                        <field name="egreso_13"></field>
+                                        <field name="egreso_14"></field>
+                                        <field name="egreso_15"></field>
+                                        <field name="egreso_16"></field>
+                                        <field name="egreso_17"></field>
+                                        <field name="egreso_18"></field>
+                                        <field name="total_egresos" readonly="True"
+                                               class="oe_subtotal_footer_separator"></field>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Observaciones">
+                                <field name="observaciones"></field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="oficio_tree" model="ir.ui.view">
+            <field name="name">iglesias.oficio.tree</field>
+            <field name="model">iglesias.oficio</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="congregacion_id"></field>
+                    <field name="fecha"></field>
+                    <field name="estacion_liturgica_id"></field>
+                    <field name="asistencia_total"></field>
+                </tree>
+            </field>
+        </record>
+
+        <record id="oficios_action" model="ir.actions.act_window">
+            <field name="name">Oficios</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">iglesias.oficio</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para agregar un oficio.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_oficios" name="Oficios" action="oficios_action"
+                  parent="iglesias.menu_iglesias_group" sequence="1"/>
+        <!--<menuitem id="product_product_menu" name="Product Variants" action="product.product_normal_action"-->
+        <!--parent="menu_stock_inventory_control" sequence="2" groups="product.group_product_variant"/>-->
+
+    </data>
+</openerp>

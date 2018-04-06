@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="cogregacion_search" model="ir.ui.view">
+            <field name="name">iglesias.congregacion.search</field>
+            <field name="model">iglesias.congregacion</field>
+            <field name="arch" type="xml">
+                <search string="Congregaciones">
+                    <field name="nombre" filter_domain="[('nombre','ilike',self)]"></field>
+                    <field name="no_registro"></field>
+                    <field name="ministro_id"></field>
+                    <filter name="parroquias" string="Parroquias" domain="[('status','=','parroquia')]"></filter>
+                    <filter name="misiones" string="Misiones de parroquias"
+                            domain="[('status','=','misiones')]"></filter>
+                    <filter name="extensiones" string="Extensiones de parroquias"
+                            domain="[('status','=','extensiones')]"></filter>
+                </search>
+            </field>
+        </record>
+
+        <record id="abrir_medios_congregacion" model="ir.actions.act_window">
+            <field name="name">Medios básicos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('congregacion_id', '=', active_id)]</field>
+            <field name="context">{'default_congregacion_id': active_id}</field>
+        </record>
+
+        <record id="congregacion_form" model="ir.ui.view">
+            <field name="name">iglesias.congregacion.form</field>
+            <field name="model">iglesias.congregacion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="action"
+                                    class="oe_stat_button" icon="fa-building-o"
+                                    name="%(abrir_medios_congregacion)d">
+                                <field name="cantidad_mediosb" string="Medios básicos" widget="statinfo"></field>
+                            </button>
+
+                        </div>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="nombre" string="Nombre"/>
+                            <h1>
+                                <field name="nombre" placeholder="Nombre de la congregacion"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+								<field name="no_registro"></field>
+                                <field name="ministro_id" context="{'default_es_empleado': True}"></field>
+                            </group>
+                            <group>
+                                <field name="status"></field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Miembros">
+                                <field name="miembros_ids" widget="many2many" context="{'default_congregacion_id':id,
+                                'default_es_miembro':True}"
+                                       domain="[('es_miembro','=', True),('congregacion_id', 'in', (False, id))]">
+                                    <tree>
+                                        <field name="name"></field>
+                                        <field name="fecha_alta"></field>
+                                        <field name="membresia"></field>
+                                        <field name="no_familia"></field>
+                                        <field name="es_diezmador"></field>
+                                        <field name="fecha_baja"></field>
+                                        <field name="causa"></field>
+                                        <field name="es_miembro" invisible="1"></field>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Liderazgo">
+                                <field name="liderazgo_ids" context="{'default_congregacion_id':id}">
+                                    <tree editable="bottom">
+                                        <field name="employee_id"></field>
+                                        <field name="funcion"></field>
+                                        <field name="fecha_instalado"></field>
+                                        <field name="fecha_removido"></field>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="congregacion_tree" model="ir.ui.view">
+            <field name="name">iglesias.congregacion.tree</field>
+            <field name="model">iglesias.congregacion</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nombre"></field>
+                    <field name="ministro_id"></field>
+                    <field name="status"></field>
+                </tree>
+            </field>
+        </record>
+
+        <record id="congregaciones_action" model="ir.actions.act_window">
+            <field name="name">Congregaciones</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">iglesias.congregacion</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para agregar una congregacion.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_congregaciones" name="Congregaciones" action="congregaciones_action"
+                  parent="iglesias.menu_iglesias_group" sequence="1"/>
+        <!--<menuitem id="product_product_menu" name="Product Variants" action="product.product_normal_action"-->
+        <!--parent="menu_stock_inventory_control" sequence="2" groups="product.group_product_variant"/>-->
+
+    </data>
+</openerp>

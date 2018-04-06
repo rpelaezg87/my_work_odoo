@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_reporte_estado_financiero_form" model="ir.ui.view">
+        <field name="name">Estado financiero de congregaciones</field>
+        <field name="model">iglesias.wizard_reporte_ef</field>
+        <field name="inherit_id" ref="wizard_reporte_comun_view"></field>
+        <field name="arch" type="xml">
+            <field name="congregaciones_ids" position="replace">
+                <field name="congregaciones_ids" nolabel="1"></field>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_wizard_reporte_estado_financiero_menu" model="ir.actions.act_window">
+        <field name="name">Reporte estado finaciero de congregaciones</field>
+        <field name="res_model">iglesias.wizard_reporte_ef</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_reporte_estado_financiero_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_wizard_reporte_estado_financiero" name="Estado finaciero" action="action_wizard_reporte_estado_financiero_menu" parent="menu_reportes" sequence="2"/>
+
+</odoo>

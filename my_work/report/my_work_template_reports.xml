@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_work_order">
+            <t t-name="my_work.report_work_order">
+                <t t-call="report.html_container">
+                    <t t-foreach="docs" t-as="o">
+                        <!--<div class="header">                             -->
+                        <!--</div>-->
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <img t-if="res_company.logo"
+                                         t-att-src="'data:image/png;base64,%s' % res_company.logo"
+                                         style="max-height: 45px;"/>
+                                </div>
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <div class="h2" name="header_title">ORDEN DE SERVICIOS</div>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">NO:</th>
+                                        <th colspan="2">Fecha:</th>
+                                        <th colspan="4"></th>
+                                        <th colspan="2">Tipo de Orden:</th>
+                                        <!--<th colspan="3">Days without moves</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td colspan="2">
+                                        <span t-field="o.no_orden"/>
+                                    </td>
+                                    <td colspan="2">
+                                        <span t-field="o.fecha"/>
+                                    </td>
+                                    <td colspan="4"></td>
+                                    <td colspan="2">
+                                        <span t-field="o.tipo_orden"/>
+                                    </td>
+
+                                </tbody>
+                            </table>
+                            <t t-if="o.tipo_orden in ['pc']">
+                                <t t-call="my_work.work_order_pc"></t>
+                            </t>
+                            <t t-if="o.tipo_orden in ['hdd']">
+                                <t t-call="my_work.work_order_hdd"></t>
+                            </t>
+                        </div>
+
+                        <div class="footer">
+                            <div class="col-xs-6 text-left">
+                                <span>Página</span>
+                                <span class="page"/>
+                                de
+                                <span class="topage"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="piezas_empty">
+            <t t-foreach="[1,2,3]" t-as="move">
+                <br>
+                    <!--<td colspan="3"></td>-->
+                </br>
+            </t>
+        </template>
+        <template id="work_done_empty">
+            <t t-foreach="[1,2,3,4,5]" t-as="move">
+                <tr>
+                    <td colspan="1">
+                        <span class="" t-esc="move"/>
+                    </td>
+                    <td colspan="3">
+                    </td>
+                    <td align="center" colspan="1">
+                    </td>
+                    <td colspan="1">
+                    </td>
+                </tr>
+            </t>
+        </template>
+
+        <template id="comun_table">
+            <tr>
+                <td align="center" colspan="12">
+                    <strong>TRABAJOS REALIZADOS</strong>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <th colspan="1">NO</th>
+                            <th colspan="3">DENOMINACIÓN</th>
+                            <th colspan="1">PRECIO</th>
+                            <th colspan="1">IMPORTE</th>
+                        </thead>
+                        <tbody>
+                            <t t-if="o.state == 'nuevo'">
+                                <t t-call="my_work.work_done_empty"></t>
+                            </t>
+                            <t t-if="o.state in ['abierto','cerrado','nts', 'cancelado']">
+                                <t t-call="my_work.work_done_full"></t>
+                            </t>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <strong>PIEZAS O ACCESORIOS EMPLEADOS:</strong>
+                    <t t-if="o.state in ('nuevo','abierto')">
+                        <t t-call="my_work.piezas_empty"></t>
+                    </t>
+                    <t t-if="o.state not in ('nuevo','abierto')">
+                        <span t-field="o.piezas"/>
+                    </t>
+                </td>
+                <td colspan="4">
+                    <strong>COSTO TOTAL:</strong>
+                </td>
+                <td colspan="2">
+                    <strong>
+                        <span t-field="o.costo"/>
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <span t-field="o.piezas"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <strong>REALIZADO POR:
+                        <span t-field="o.realizado_por"/>
+                        <br></br>
+                        FIRMA: ____________________
+                    </strong>
+                </td>
+                <td colspan="4">
+                    <strong>ENTREGADO POR:
+                        <span t-field="o.entregado_por"/>
+                        <br></br>
+                        FIRMA: ____________________
+                    </strong>
+                </td>
+                <td colspan="4">
+                    <strong>RECIBIDO POR:
+                        <span t-field="o.recibido_por"/>
+                        <br></br>
+                        FIRMA: ____________________
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <strong>
+                        PCKMC SERVICES:
+                    </strong>
+                    <span t-field="res_company.partner_id.contact_address"/>
+                </td>
+            </tr>
+        </template>
+
+        <template id="work_done_full">
+            <t t-foreach="o.work_done_ids" t-as="move">
+                <tr>
+                    <td colspan="1">
+                        <span class="" t-field="move.no"/>
+                    </td>
+                    <td colspan="3">
+                        <span class="oe_editable"
+                              t-field="move.denominacion"/>
+                    </td>
+                    <td align="center" colspan="1">
+                        <span class="oe_editable" t-field="move.precio"/>
+                    </td>
+                    <td colspan="1">
+                        <span class="oe_editable" t-field="move.importe"/>
+                    </td>
+                </tr>
+            </t>
+        </template>
+        <!--Para HDD-->
+        <template id="work_order_hdd">
+            <t t-foreach="o.whdd_ids" t-as="whdd">
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <td colspan="6">
+                            <strong>A NOMBRE DE:</strong>
+                            <span t-field="o.a_nombre"/>
+                        </td>
+                        <td colspan="1">
+                            <strong>CI</strong>
+                        </td>
+                        <td colspan="2">
+                            <span t-field="o.a_nombre.ci"/>
+                        </td>
+                        <td colspan="1">
+                            <strong>TELEF</strong>
+                        </td>
+                        <td colspan="2">
+                            <span t-field="o.a_nombre.phone"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12">
+                            <strong>EMPRESA O DIRECCION:</strong>
+                            <span t-field="o.a_nombre.contact_address"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12" align="center">
+                            <strong>TIPO DE SERVICIO:</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <strong>RECUPERACIÓN DE DATOS:
+                                <t t-if="o.recuperacion_datos==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>REPARACIÓN DE HARDWARE:
+                                <t t-if="o.reparcion_hardware==True">X</t>
+                            </strong>
+                        </td>
+                        <td colspan="6">
+                            <strong>SUSTITUCIÓN DE PLACA:
+                                <t t-if="o.sus_placa==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>SUSTITUCIÓN DE COMPONENTES:
+                                <t t-if="o.sus_componentes==True">X</t>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="12">
+                            <strong>DESCRIPCIÓN DEL DISCO DURO</strong>
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>MARCA:
+                                            <span t-field="whdd.marca"></span>
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <strong>FIRW:
+                                            <span t-field="whdd.firw"/>
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <strong># SERIE:
+                                            <span t-field="whdd.no_serie"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>CAPACIDAD:
+                                            <span t-field="whdd.capacidad"></span>
+                                        </strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <strong>TIPO DE CONEXIÓN:
+                                            <span t-field="whdd.tipo_conexion"/>
+                                        </strong>
+                                    </td>
+                                    <td colspan="2"></td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <t t-call="my_work.comun_table"></t>
+                </table>
+            </t>
+
+        </template>
+
+        <!--Para la PC-->
+        <template id="work_order_pc">
+            <t t-foreach="o.wpc_ids" t-as="wpc">
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <td colspan="6">
+                            <strong>A NOMBRE DE:</strong>
+                            <span t-field="o.a_nombre"/>
+                        </td>
+                        <td colspan="1">
+                            <strong>CI</strong>
+                        </td>
+                        <td colspan="2">
+                            <span t-field="o.a_nombre.ci"/>
+                        </td>
+                        <td colspan="1">
+                            <strong>TELEF</strong>
+                        </td>
+                        <td colspan="2">
+                            <span t-field="o.a_nombre.phone"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12">
+                            <strong>EMPRESA O DIRECCION:
+                            </strong>
+                            <span t-field="o.a_nombre.contact_address"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12" align="center">
+                            <strong>TIPO DE SERVICIO:</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <strong>MANTENIMIENTO:
+                                <t t-if="o.mantenimiento==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>REPARACIÓN MENOR:
+                                <t t-if="o.rmenor==True">X</t>
+                            </strong>
+                        </td>
+                        <td colspan="3">
+                            <strong>REPARACIÓN MAYOR:
+                                <t t-if="o.rmayor==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>OTROS SERVICIOS:
+                                <t t-if="o.otros==True">X</t>
+                            </strong>
+                        </td>
+                        <td colspan="3">
+                            <strong>SISTEMA OPERATIVO:
+                                <t t-if="o.so==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>ACT. DE SOFT:
+                                <t t-if="o.act==True">X</t>
+                            </strong>
+                        </td>
+                        <td colspan="3">
+                            <strong>INST. SOFT ACT:
+                                <t t-if="o.insoft==True">X</t>
+                            </strong>
+                            <br></br>
+                            <strong>DE ANTIVIRUS:
+                                <t t-if="o.antivirus==True">X</t>
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="12">
+                            <strong>DESCRIPCIÓN DEL EQUIPO</strong>
+                            <table class="table table-bordered table-condensed">
+                                <tr>
+                                    <td colspan="1">
+                                        <strong>MOTHERBOARD:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="wpc.pc.motherboard"/>
+                                    </td>
+                                    <td colspan="1">
+                                        <strong>LECTORES:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <t t-foreach="wpc.pc.lectores" t-as="lector">
+                                            <br>
+                                                [<span t-field="lector.code"></span>]
+                                                <span t-field="lector.name"/>
+                                            </br>
+                                        </t>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">
+                                        <strong>MEMORIAS RAM:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <table class="table table-bordered table-condensed">
+                                            <t t-foreach="wpc.pc.memorias_ram" t-as="ram">
+                                                <tr>
+                                                    <td>
+                                                        [<span t-field="ram.code"></span>]
+                                                        <span t-field="ram.name"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </td>
+                                    <td colspan="1">
+                                        <strong>HDD:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <table class="table table-bordered table-condensed">
+                                            <t t-foreach="wpc.pc.hdd" t-as="hdd">
+                                                <tr>
+                                                    <td>
+                                                        [<span t-field="hdd.code"/>]
+                                                        <span t-field="hdd.name"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">
+                                        <strong>CHASIS:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="wpc.pc.chasis"/>
+                                    </td>
+                                    <td colspan="1">
+                                        <strong>FUENTE:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="wpc.pc.fuente"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1">
+                                        <strong>CPU:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="wpc.pc.cpu"/>
+                                    </td>
+                                    <td colspan="1">
+                                        <strong>OTROS:</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="wpc.pc.otros"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <t t-call="my_work.comun_table"></t>
+                </table>
+            </t>
+        </template>
+    </data>
+</odoo>

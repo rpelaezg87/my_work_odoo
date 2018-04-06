@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="product_template_search_view_inherit" model="ir.ui.view">
+            <field name="name">iglesias.product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <filter name="services" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </filter>
+                <filter name="consumable" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </filter>
+                <filter name="filter_to_sell" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </filter>
+                <filter name="filter_to_purchase" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </filter>
+                <field name="categ_id" position="after">
+                    <field name="responsable_id" options="{'no_create': True}"></field>
+                    <field name="congregacion_id"></field>
+                </field>
+                <filter name="filter_to_sell" position="before">
+                    <filter name="buen_estado" string="En buen estado" domain="[('estado_tecnico', '=', 'bueno')]"></filter>
+                    <filter name="regular_estado" string="En estado regular" domain="[('estado_tecnico', '=', 'regular')]"></filter>
+                    <filter name="mal_estado" string="En mal estado" domain="[('estado_tecnico', '=', 'deficiente')]"></filter>
+                    <filter name="bajas" string="De bajas" domain="[('fecha_baja', '!=', False)]"></filter>
+                </filter>
+            </field>
+        </record>
+        <record id="product_template_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="sale_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <label for="sale_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </label>
+                <field name="purchase_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <label for="purchase_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </label>
+                <field name="list_price" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <!--<field name="barcode" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</field>-->
+            </field>
+        </record>
+
+        <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="barcode" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="default_code" position="after">
+                    <field name="congregacion_id"></field>
+                    <field name="responsable_id" context="{'default_congregacion_id':congregacion_id}"></field>
+                    <field name="fecha_alta"></field>
+                </field>
+                 <div name="standard_price_uom" position="after">
+                    <field name="ministro_id"></field>
+                    <field name="categ_id"></field>
+                    <field name="estado_tecnico"></field>
+                    <field name="fecha_baja"></field>
+                </div>
+                <group name="description" position="replace">
+                    <group name="description" string="Descripción del producto">
+                        <field name="description_sale" colspan="4" nolabel="1" placeholder="Breve descripción del producto"></field>
+                    </group>
+                </group>
+                <xpath expr="//page[@name='sales']" position="after">
+                    <page string="Direccion">
+                        <group name="direccion">
+                                <separator string="Direccion en la que permanece" colspan="4"/>
+                                <field name="direccion" colspan="4" nolabel="1"
+                                    placeholder="En esta direccion permanece el medio."/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='sales']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_action_product" model="ir.actions.act_window">
+        <field name="name">Medios</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_type">form</field>
+        <field name="context">{"search_default_products": 1, 'default_type': 'consu'}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new product.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_product" name="Medios básicos" action="product_template_action_product"
+        parent="iglesias.menu_medios_b_group" sequence="1"/>
+
+        <menuitem id="menu_product_category" name="Categorías" action="product.product_category_action_form"
+        parent="iglesias.menu_medios_b_group" sequence="2"/>
+    <!--<menuitem id="product_product_menu" name="Product Variants" action="product.product_normal_action"-->
+        <!--parent="menu_stock_inventory_control" sequence="2" groups="product.group_product_variant"/>-->
+
+    </data>
+</openerp>

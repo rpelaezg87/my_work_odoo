@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_fe_bautismo">
+        <t t-name="iglesias.report_fe_bautismo">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="h2 text-center" name="header_title">Fe de bautismo</div>
+                                <!--<div class="col-xs-9 text-right" style="margin-top:20px;" t-field="res_company.rml_header1"/>-->
+                                <!--<div class="h2" name="header_title">Listado</div>-->
+                                <!--<div class="h2" name="fecha"> <t t-call="my_work.work_order_pc"></t></div>-->
+                            </div>
+                            <t t-call="iglesias.tabla_fe_bautismo"></t>
+                            <t t-call="iglesias.sign-fe"></t>
+                        </div>
+                    </t>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="tabla_fe_bautismo">
+        <table class="table table-bordered table-condensed" align="center">
+            <tr>
+                <td><strong>El hermano(a):</strong></td>
+                <td>
+                    <span t-field="o.miembro_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Natural de:</strong></td>
+                <td>
+                    <span t-field="o.miembro_id.country_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Con domicilio particular en:</strong></td>
+                <td>
+                    <t t-if="o.miembro_id.address_home_id">
+                        <span t-field="o.miembro_id.address_home_id.contact_address"/>
+                    </t>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Y número de identidad:</strong></td>
+                <td>
+                    <span t-field="o.miembro_id.identification_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Hijo(a) de:</strong></td>
+                <td>
+                    <span t-field="o.padre"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Natural de:</strong></td>
+                <td>
+                    <span t-field="o.padre.country_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>E hijo(a) de:</strong></td>
+                <td>
+                    <span t-field="o.madre"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Natural de:</strong></td>
+                <td>
+                    <span t-field="o.madre.country_id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Fue bautizado(a) el día:</strong></td>
+                <td>
+                    <span t-field="o.fecha"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>En:</strong></td>
+                <td>
+                    <span t-field="o.lugar"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Por las manos de:</strong></td>
+                <td>
+                    <span t-field="o.ministro"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Bajo la mirada de su padrino:</strong></td>
+                <td>
+                    <span t-field="o.padrino"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Y de su madrina:</strong></td>
+                <td>
+                    <span t-field="o.madrina"/>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Su bautismo fue confirmado el día:</strong></td>
+                <td>
+                    <t t-if="o.confirmacion_id">
+                        <span t-field="o.confirmacion_id.fecha"/>
+                    </t>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Por la imposición de manos del Obispo:</strong></td>
+                <td>
+                    <t t-if="o.confirmacion_id">
+                        <span t-field="o.confirmacion_id.obispo"/>
+                    </t>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Siendo presentado por:</strong></td>
+                <td>
+                    <t t-if="o.confirmacion_id">
+                        <span t-field="o.confirmacion_id.ministro"/>
+                    </t>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Así consta en el Registro:______ de la IERC</strong></td>
+                <td>
+                    <span t-field="o.congregacion_id"/>
+                </td>
+            </tr>
+
+        </table>
+    </template>
+
+    <template id="sign-fe">
+        <table class="table wq-table" name="table_sign">
+            <tr>
+                <td>
+                    <strong>Archivero(a)</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>Nombre:__________________________________</td>
+            </tr>
+            <tr>
+                <td>Firma:__________________________________</td>
+                <td>Cuño de la Diócesis:__________________________________</td>
+            </tr>
+        </table>
+    </template>
+
+</odoo>
